@@ -1,1 +1,10 @@
 /* your css code goes here */
+table{
+  margin: 0;
+  padding: 0;
+  height: 90vh;
+}
+
+.notInMonth{
+  background-color: grey;
+}

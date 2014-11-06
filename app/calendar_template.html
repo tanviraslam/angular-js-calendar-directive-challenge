@@ -1,0 +1,40 @@
+<div>
+  <nav class="navbar navbar-inverse navbar-default" role="navigation">
+    <div class="container-fluid">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <form class="navbar-form">
+            <select name="month" id="month" ng-model="selectedMonth">
+              <option ng-repeat="month in months" value="{{month}}">{{month}}</option>
+            </select>
+            <select name="year" id="year" ng-model="selectedYear">
+              <option ng-repeat="year in years"  value="{{year}}">{{year}}</option>
+            </select>
+          </form>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+  <div class="container-fluid calendar-grid">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Sunday</th>
+          <th>Monday</th>
+          <th>Tuesday</th>
+          <th>Wednesday</th>
+          <th>Thursday</th>
+          <th>Friday</th>
+          <th>Saturday</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="unit in tableHeightUnits">
+          <td ng-repeat="dayOfWeek in weekRange">{{monthRange[unit * weekRange.length + dayOfWeek]}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
