@@ -6,17 +6,19 @@ cda.directive("calendar", function(){
   return {
     restrict: 'A',
     templateUrl: 'calendar_template.html',
-    scope: {value: '='},
     replace:true,
     link: function(scope, element, attrs){
       scope.months=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       var year_range = 20;
       var current_date = new Date();
+      var truthArr = [];
+      var true_values = [];
       scope.selectedMonthNum = current_date.getMonth();
       scope.selectedMonth = scope.months[scope.selectedMonthNum];
       scope.selectedYear = current_date.getFullYear();
       scope.weekRange = _.range(7);
       scope.years=[];
+      
 
       //Getting 20 years before and after selected year in the dropdown options.
       for(var i = scope.selectedYear - year_range; i < scope.selectedYear + year_range + 1; i++){
@@ -29,21 +31,37 @@ cda.directive("calendar", function(){
         scope.selectedMonthNum = scope.months.indexOf(scope.selectedMonth);
         scope.range = CalendarRange.getMonthlyRange(createDateObject(scope.selectedYear, scope.selectedMonthNum));
         scope.monthRange = getMonthRange(scope.range);
-        //scope.outsideDays = getDaysNotInMonth(scope.range);
-        //console.log(scope.outsideDays);
+        initiateTruthArray(truthArr, scope.monthRange.length);
+        getDaysNotInMonth(scope.range);
+        
+        console.log(truthArr);
         scope.tableHeightUnits = _.range(Math.round(scope.monthRange.length/scope.weekRange.length));
+        
       });
+
+      //Scope Methods
+      scope.isOutside = function(index){
+        return truthArr[index];
+      };
 
       //Helper Methods
       //This is still a work in progress
       function getDaysNotInMonth(dateRange){
-        var outsideDates = [];
+        var outsideDates = tempMonthRange1  = [];
+        var tempMonthRange2 = [];
         var monthRange = getMonthRange(dateRange);
+        angular.copy(monthRange, tempMonthRange1);
+        angular.copy(tempMonthRange1, tempMonthRange2);
         var length = monthRange.length;
-        var startIndex = monthRange.indexOf(dateRange.start);
-        var endIndex = monthRange.indexOf(dateRange.end);
-        outsideDates = monthRange.splice(monthRange[0],startIndex).concat(monthRange.splice(endIndex, monthRange[length]));
-        return outsideDates;
+        var startIndex = monthRange.indexOf(dateRange.start.getDate());
+        var endIndex = monthRange.indexOf(dateRange.end.getDate(), startIndex);
+        for(var i = 0; i < startIndex; i++ ){
+          truthArr[i] = true;
+        }
+
+        for(var j = length - 1; j > endIndex; j-- ){
+          truthArr[j] = true;
+        }
       }
 
       function createDateObject(year, month){
@@ -60,6 +78,12 @@ cda.directive("calendar", function(){
         return monthRange;
       }
 
+      function initiateTruthArray(truthArr, monthLength){
+        for(var i =0; i<monthLength; i++){
+          truthArr[i] = false;
+        }
+      }
+
     } 
   }
 });
@@ -67,5 +91,5 @@ cda.directive("calendar", function(){
 
 //How do I get access to variables in the scope of the directives link function.
 cda.controller("TableController", function($scope ){
-  console.log($scope.monthRange);
+  //console.log($scope.monthRange);
 });

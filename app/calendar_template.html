@@ -6,10 +6,10 @@
         <ul class="nav navbar-nav">
           <form class="navbar-form">
             <select name="month" id="month" ng-model="selectedMonth">
-              <option ng-repeat="month in months" value="{{month}}">{{month}}</option>
+              <option ng-repeat="month in months" value="{{month}}" ng-selected="month==selectedMonth">{{month}}</option>
             </select>
             <select name="year" id="year" ng-model="selectedYear">
-              <option ng-repeat="year in years"  value="{{year}}">{{year}}</option>
+              <option ng-repeat="year in years"  value="{{year}}" ng-selected="year==selectedYear">{{year}}</option>
             </select>
           </form>
         </ul>
@@ -31,7 +31,7 @@
       </thead>
       <tbody>
         <tr ng-repeat="unit in tableHeightUnits">
-          <td ng-repeat="dayOfWeek in weekRange">{{monthRange[unit * weekRange.length + dayOfWeek]}}</td>
+          <td ng-repeat="dayOfWeek in weekRange" ng-class='{"not-in-month": isOutside(unit * weekRange.length + dayOfWeek)}'>{{monthRange[unit * weekRange.length + dayOfWeek]}}</td>
         </tr>
       </tbody>
     </table>

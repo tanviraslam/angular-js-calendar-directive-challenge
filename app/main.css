@@ -5,6 +5,10 @@ table{
   height: 90vh;
 }
 
-.notInMonth{
-  background-color: grey;
+.not-in-month{
+  background-color: lightgray;
+}
+
+table td{
+  padding: 0;
 }
